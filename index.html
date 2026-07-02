@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayLeaf(ペイリーフ)| 事業の成長を加速する、次世代オンライン決済プラットフォーム</title>
+<meta name="description" content="PayLeafは導入最短3分、決済手数料2.8%のオンライン決済プラットフォーム。クレジットカード・QR・銀行振込を1つのAPIで。PCI DSS準拠・3Dセキュア対応で、スタートアップから上場企業まで12,000社が利用中。">
+<style>
+  /* ============ Design Tokens ============ */
+  :root{
+    --navy-950:#050e1f;
+    --navy-900:#081631;
+    --navy-800:#0c2148;
+    --navy-700:#123061;
+    --blue-600:#1857d4;
+    --blue-500:#2f6ff0;
+    --blue-400:#5b8ff7;
+    --blue-300:#8fb4fb;
+    --sky-200:#c7dcfe;
+    --leaf-400:#37d9a0;
+    --leaf-300:#6fe8bd;
+    --ink-900:#0b1a33;
+    --ink-600:#44536e;
+    --ink-400:#7b8aa5;
+    --paper:#f6f9ff;
+    --white:#ffffff;
+    --line:rgba(18,48,97,.1);
+    --radius-lg:28px;
+    --radius-md:18px;
+    --radius-sm:12px;
+    --shadow-card:0 12px 40px -12px rgba(8,22,49,.14);
+    --shadow-pop:0 24px 70px -20px rgba(24,87,212,.35);
+    --font-sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-num:"Avenir Next","Futura","Segoe UI",var(--font-sans);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-sans);
+    color:var(--ink-900);
+    background:var(--white);
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  ul{list-style:none}
+  ::selection{background:var(--blue-500);color:#fff}
+
+  .wrap{width:min(1120px,92%);margin-inline:auto}
+
+  /* ============ Reveal animation ============ */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+  .rv.on{opacity:1;transform:none}
+  .rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}
+  @media (prefers-reduced-motion:reduce){
+    .rv{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+    *{animation-duration:.001s !important;animation-iteration-count:1 !important}
+  }
+
+  /* ============ Header ============ */
+  .header{
+    position:fixed;inset:0 0 auto;z-index:100;
+    transition:background .35s,box-shadow .35s,backdrop-filter .35s;
+  }
+  .header.scrolled{
+    background:rgba(5,14,31,.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 1px 0 rgba(255,255,255,.06);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:72px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:.02em}
+  .brand .leaf-mark{width:34px;height:34px;flex:none}
+  .brand em{font-style:normal;color:var(--leaf-300)}
+  .gnav{display:flex;align-items:center;gap:34px}
+  .gnav a{color:rgba(255,255,255,.78);font-size:.92rem;font-weight:600;position:relative;padding:4px 0;transition:color .25s}
+  .gnav a::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:var(--leaf-400);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .gnav a:hover{color:#fff}
+  .gnav a:hover::after{transform:scaleX(1)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;border-radius:999px;cursor:pointer;border:none;
+    transition:transform .25s,box-shadow .25s,background .25s;
+    font-family:inherit;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--blue-500),var(--blue-600));
+    color:#fff;padding:13px 30px;font-size:.95rem;
+    box-shadow:0 10px 30px -8px rgba(47,111,240,.55);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px -8px rgba(47,111,240,.65)}
+  .btn-ghost{
+    background:rgba(255,255,255,.08);color:#fff;padding:13px 30px;font-size:.95rem;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+  .gnav .btn-primary{padding:10px 24px;font-size:.88rem}
+
+  /* Hamburger */
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;width:44px;height:44px;position:relative;z-index:120}
+  .menu-btn span{position:absolute;left:10px;width:24px;height:2px;background:#fff;border-radius:2px;transition:transform .35s,opacity .3s,top .35s}
+  .menu-btn span:nth-child(1){top:15px}
+  .menu-btn span:nth-child(2){top:22px}
+  .menu-btn span:nth-child(3){top:29px}
+  .menu-btn[aria-expanded="true"] span:nth-child(1){top:22px;transform:rotate(45deg)}
+  .menu-btn[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .menu-btn[aria-expanded="true"] span:nth-child(3){top:22px;transform:rotate(-45deg)}
+
+  @media (max-width:860px){
+    .menu-btn{display:block}
+    .gnav{
+      position:fixed;inset:0;z-index:110;
+      flex-direction:column;justify-content:center;gap:30px;
+      background:linear-gradient(160deg,var(--navy-950),var(--navy-800));
+      opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s;
+    }
+    .gnav.open{opacity:1;visibility:visible}
+    .gnav a{font-size:1.2rem}
+  }
+
+  /* ============ Hero ============ */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(1100px 600px at 82% -10%,rgba(47,111,240,.4),transparent 60%),
+      radial-gradient(700px 500px at -8% 55%,rgba(55,217,160,.14),transparent 60%),
+      linear-gradient(168deg,var(--navy-950) 0%,var(--navy-900) 45%,var(--navy-800) 100%);
+    color:#fff;
+    padding:170px 0 0;
+    overflow:hidden;
+  }
+  #heroCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.55}
+  .hero-grid{
+    position:relative;z-index:2;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;
+    padding-bottom:90px;
+  }
+  .hero-copy .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.8rem;font-weight:700;letter-spacing:.06em;
+    color:var(--leaf-300);
+    background:rgba(55,217,160,.1);
+    border:1px solid rgba(55,217,160,.35);
+    padding:7px 16px;border-radius:999px;margin-bottom:26px;
+  }
+  .hero-copy .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--leaf-400);box-shadow:0 0 10px var(--leaf-400);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero-copy h1{
+    font-size:clamp(2rem,4.6vw,3.35rem);
+    line-height:1.35;font-weight:800;letter-spacing:.01em;
+    margin-bottom:24px;
+  }
+  .hero-copy h1 .grad{
+    background:linear-gradient(92deg,var(--blue-300),var(--leaf-300));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-copy .lead{
+    color:rgba(214,228,252,.85);font-size:clamp(.95rem,1.4vw,1.08rem);
+    max-width:34em;margin-bottom:38px;
+  }
+  .hero-cta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:52px}
+  .hero-stats{
+    display:flex;gap:0;border-top:1px solid rgba(255,255,255,.12);
+    padding-top:28px;max-width:520px;
+  }
+  .hero-stats li{flex:1;padding-right:20px}
+  .hero-stats li + li{border-left:1px solid rgba(255,255,255,.12);padding-left:20px}
+  .hero-stats .num{
+    font-family:var(--font-num);font-size:clamp(1.5rem,2.6vw,2.1rem);font-weight:800;
+    color:#fff;line-height:1.2;letter-spacing:.01em;
+  }
+  .hero-stats .num small{font-size:.55em;font-weight:700;margin-left:2px;color:var(--blue-300)}
+  .hero-stats .label{font-size:.76rem;color:rgba(199,220,254,.7);letter-spacing:.04em}
+
+  /* --- Phone mockup --- */
+  .hero-visual{position:relative;display:flex;justify-content:center}
+  .phone{
+    width:min(300px,74vw);
+    aspect-ratio:9/18.6;
+    border-radius:44px;
+    background:linear-gradient(160deg,#16294e,#0a1834);
+    padding:12px;
+    box-shadow:
+      var(--shadow-pop),
+      inset 0 0 0 1.5px rgba(139,180,251,.35);
+    position:relative;
+    animation:floaty 7s ease-in-out infinite;
+  }
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-14px) rotate(.6deg)}}
+  .phone-screen{
+    width:100%;height:100%;border-radius:34px;overflow:hidden;
+    background:linear-gradient(175deg,#f2f7ff 0%,#e6efff 100%);
+    display:flex;flex-direction:column;
+    color:var(--ink-900);
+  }
+  .ps-head{
+    background:linear-gradient(135deg,var(--blue-600),var(--navy-700));
+    color:#fff;padding:26px 20px 20px;
+    border-radius:0 0 26px 26px;
+  }
+  .ps-head .hello{font-size:.68rem;opacity:.75;letter-spacing:.05em}
+  .ps-head .balance{font-family:var(--font-num);font-size:1.7rem;font-weight:800;letter-spacing:.01em;margin:2px 0 12px}
+  .ps-head .balance small{font-size:.55em;font-weight:700;opacity:.8}
+  .ps-actions{display:flex;gap:8px}
+  .ps-actions span{
+    flex:1;text-align:center;font-size:.62rem;font-weight:700;
+    background:rgba(255,255,255,.16);border-radius:10px;padding:8px 2px;
+    backdrop-filter:blur(4px);
+  }
+  .ps-body{padding:16px 16px 12px;flex:1;display:flex;flex-direction:column;gap:10px}
+  .ps-label{font-size:.62rem;font-weight:800;color:var(--ink-400);letter-spacing:.1em}
+  .tx{
+    display:flex;align-items:center;gap:10px;
+    background:#fff;border-radius:14px;padding:10px 12px;
+    box-shadow:0 4px 14px -6px rgba(8,22,49,.12);
+  }
+  .tx .ic{
+    width:34px;height:34px;border-radius:11px;flex:none;
+    display:grid;place-items:center;font-size:1rem;
+  }
+  .tx .ic.b1{background:#e3edff}.tx .ic.b2{background:#dff7ec}.tx .ic.b3{background:#fff0dd}
+  .tx .meta{flex:1;min-width:0}
+  .tx .meta .name{font-size:.72rem;font-weight:700;line-height:1.3}
+  .tx .meta .time{font-size:.58rem;color:var(--ink-400)}
+  .tx .amt{font-family:var(--font-num);font-size:.78rem;font-weight:800}
+  .tx .amt.plus{color:#0ca678}
+  .ps-chart{
+    margin-top:auto;background:#fff;border-radius:14px;padding:12px;
+    box-shadow:0 4px 14px -6px rgba(8,22,49,.12);
+  }
+  .ps-chart .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .ps-chart .row b{font-size:.68rem}
+  .ps-chart .row span{font-size:.6rem;color:#0ca678;font-weight:700}
+  /* Floating chips around phone */
+  .chip{
+    position:absolute;z-index:3;
+    background:rgba(255,255,255,.94);color:var(--ink-900);
+    border-radius:16px;padding:12px 16px;
+    box-shadow:0 18px 44px -14px rgba(8,22,49,.45);
+    display:flex;align-items:center;gap:10px;
+    font-size:.78rem;font-weight:700;line-height:1.4;
+    animation:floaty2 6s ease-in-out infinite;
+  }
+  @keyframes floaty2{0%,100%{transform:translateY(-8px)}50%{transform:translateY(8px)}}
+  .chip .cic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:1.05rem;flex:none}
+  .chip small{display:block;font-size:.62rem;font-weight:600;color:var(--ink-400)}
+  .chip-1{top:12%;left:-4%;animation-delay:.6s}
+  .chip-1 .cic{background:#dff7ec}
+  .chip-2{bottom:16%;right:-6%;animation-delay:1.4s}
+  .chip-2 .cic{background:#e3edff}
+  @media (max-width:640px){
+    .chip-1{left:-2%}
+    .chip-2{right:-2%}
+  }
+
+  /* Hero bottom wave */
+  .hero-wave{display:block;width:100%;margin-top:-2px}
+
+  @media (max-width:960px){
+    .hero{padding-top:130px}
+    .hero-grid{grid-template-columns:1fr;gap:70px;padding-bottom:60px}
+    .hero-visual{order:2}
+    .hero-stats{max-width:none}
+  }
+
+  /* ============ Logos ============ */
+  .logos{padding:64px 0 30px;background:var(--white)}
+  .logos p.cap{text-align:center;font-size:.82rem;font-weight:700;color:var(--ink-400);letter-spacing:.14em;margin-bottom:34px}
+  .logo-track{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 44px;align-items:center}
+  .logo-item{
+    display:flex;align-items:center;gap:9px;
+    color:#93a2bd;font-weight:800;letter-spacing:.03em;
+    font-size:1.05rem;
+    filter:grayscale(1);opacity:.85;
+    transition:color .3s,filter .3s,opacity .3s,transform .3s;
+    padding:8px 4px;
+  }
+  .logo-item svg{width:26px;height:26px}
+  .logo-item:hover{color:var(--blue-600);filter:none;opacity:1;transform:translateY(-2px)}
+  .logo-item .lg-sub{font-size:.6em;font-weight:700;letter-spacing:.2em;display:block;line-height:1;margin-top:2px;color:inherit;opacity:.7}
+
+  /* ============ Section base ============ */
+  section{padding:110px 0}
+  .sec-head{max-width:640px;margin-bottom:64px}
+  .sec-head.center{margin-inline:auto;text-align:center}
+  .kicker{
+    display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.2em;
+    color:var(--blue-500);margin-bottom:14px;
+  }
+  .kicker::before{content:"— ";color:var(--leaf-400)}
+  h2.title{font-size:clamp(1.55rem,3.2vw,2.3rem);line-height:1.45;font-weight:800;letter-spacing:.01em}
+  .sec-lead{margin-top:18px;color:var(--ink-600);font-size:.98rem}
+
+  /* ============ Features ============ */
+  .features{background:linear-gradient(180deg,var(--white) 0%,var(--paper) 18%,var(--paper) 100%)}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .feat-card{
+    background:var(--white);border-radius:var(--radius-lg);
+    padding:38px 32px;position:relative;overflow:hidden;
+    box-shadow:var(--shadow-card);
+    border:1px solid var(--line);
+    transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s;
+  }
+  .feat-card::before{
+    content:"";position:absolute;inset:auto -30% -55% auto;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(47,111,240,.09),transparent 68%);
+    transition:transform .5s;
+  }
+  .feat-card:hover{transform:translateY(-8px);box-shadow:0 26px 60px -18px rgba(24,87,212,.28)}
+  .feat-card:hover::before{transform:scale(1.5)}
+  .feat-ic{
+    width:58px;height:58px;border-radius:18px;margin-bottom:24px;
+    display:grid;place-items:center;
+    background:linear-gradient(140deg,#e3edff,#f0fbf6);
+    box-shadow:inset 0 0 0 1px rgba(47,111,240,.14);
+  }
+  .feat-ic svg{width:28px;height:28px}
+  .feat-card h3{font-size:1.12rem;font-weight:800;margin-bottom:12px;letter-spacing:.02em}
+  .feat-card p{font-size:.9rem;color:var(--ink-600)}
+  .feat-card .tag{
+    position:absolute;top:26px;right:26px;
+    font-size:.62rem;font-weight:800;letter-spacing:.08em;
+    color:var(--blue-500);background:#e9f1ff;border-radius:999px;padding:4px 12px;
+  }
+  @media (max-width:960px){.feat-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:640px){.feat-grid{grid-template-columns:1fr}}
+
+  /* ============ Flow strip ============ */
+  .flow{background:var(--paper);padding-top:0}
+  .flow-box{
+    background:linear-gradient(135deg,var(--navy-800),var(--navy-700));
+    border-radius:var(--radius-lg);color:#fff;
+    padding:64px 56px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:40px;
+    position:relative;overflow:hidden;
+  }
+  .flow-box::after{
+    content:"";position:absolute;inset:-40% -20% auto auto;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(91,143,247,.25),transparent 65%);
+  }
+  .flow-step{position:relative;z-index:1}
+  .flow-step .n{
+    font-family:var(--font-num);font-size:2.6rem;font-weight:800;line-height:1;
+    background:linear-gradient(180deg,var(--blue-300),rgba(139,180,251,.25));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:14px;
+  }
+  .flow-step h3{font-size:1.05rem;font-weight:800;margin-bottom:8px}
+  .flow-step p{font-size:.85rem;color:rgba(214,228,252,.78)}
+  @media (max-width:860px){
+    .flow-box{grid-template-columns:1fr;padding:48px 34px;gap:32px}
+  }
+
+  /* ============ Security ============ */
+  .security{
+    background:
+      radial-gradient(900px 500px at 100% 0%,rgba(47,111,240,.25),transparent 55%),
+      linear-gradient(165deg,var(--navy-950),var(--navy-900) 70%,var(--navy-800));
+    color:#fff;position:relative;overflow:hidden;
+  }
+  .security .kicker{color:var(--leaf-300)}
+  .security .sec-lead{color:rgba(199,220,254,.75)}
+  .sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .shield-wrap{display:flex;justify-content:center;position:relative}
+  .shield-wrap svg{width:min(340px,80vw);height:auto}
+  .ring{transform-origin:210px 210px}
+  .ring-1{animation:spin 26s linear infinite}
+  .ring-2{animation:spin 38s linear infinite reverse}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .sec-list{display:flex;flex-direction:column;gap:14px}
+  .sec-item{
+    display:flex;gap:18px;align-items:flex-start;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(139,180,251,.18);
+    border-radius:var(--radius-md);padding:22px 24px;
+    transition:background .3s,border-color .3s,transform .3s;
+  }
+  .sec-item:hover{background:rgba(255,255,255,.09);border-color:rgba(111,232,189,.45);transform:translateX(6px)}
+  .sec-item .sic{
+    width:44px;height:44px;border-radius:13px;flex:none;
+    background:linear-gradient(140deg,rgba(55,217,160,.22),rgba(47,111,240,.22));
+    display:grid;place-items:center;
+  }
+  .sec-item .sic svg{width:22px;height:22px}
+  .sec-item h3{font-size:.98rem;font-weight:800;margin-bottom:4px}
+  .sec-item p{font-size:.83rem;color:rgba(199,220,254,.72)}
+  .cert-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .cert{
+    font-size:.72rem;font-weight:800;letter-spacing:.06em;
+    border:1px solid rgba(111,232,189,.4);color:var(--leaf-300);
+    padding:7px 16px;border-radius:999px;
+    background:rgba(55,217,160,.07);
+  }
+  @media (max-width:900px){.sec-grid{grid-template-columns:1fr;gap:50px}}
+
+  /* ============ Voice / testimonial ============ */
+  .voice{background:var(--paper)}
+  .voice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .voice-card{
+    background:var(--white);border-radius:var(--radius-lg);padding:36px 30px;
+    border:1px solid var(--line);box-shadow:var(--shadow-card);
+    display:flex;flex-direction:column;gap:20px;
+    transition:transform .35s,box-shadow .35s;
+  }
+  .voice-card:hover{transform:translateY(-6px);box-shadow:0 26px 60px -18px rgba(24,87,212,.22)}
+  .voice-card .q{font-size:.92rem;color:var(--ink-600);flex:1}
+  .voice-card .q::before{
+    content:"“";display:block;font-family:Georgia,serif;font-size:3rem;line-height:.6;
+    color:var(--blue-400);margin-bottom:14px;
+  }
+  .voice-who{display:flex;align-items:center;gap:14px}
+  .avatar{
+    width:48px;height:48px;border-radius:50%;flex:none;
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:1rem;
+  }
+  .av-1{background:linear-gradient(135deg,#2f6ff0,#123061)}
+  .av-2{background:linear-gradient(135deg,#37d9a0,#0e7d5c)}
+  .av-3{background:linear-gradient(135deg,#7c5cf0,#3a2c8f)}
+  .voice-who .nm{font-size:.88rem;font-weight:800;line-height:1.4}
+  .voice-who .rl{font-size:.72rem;color:var(--ink-400)}
+  @media (max-width:900px){.voice-grid{grid-template-columns:1fr}}
+
+  /* ============ Pricing / fee ============ */
+  .fee{background:var(--white)}
+  .fee-band{
+    display:grid;grid-template-columns:1fr 1fr;border-radius:var(--radius-lg);overflow:hidden;
+    box-shadow:var(--shadow-pop);
+  }
+  .fee-main{
+    background:linear-gradient(140deg,var(--blue-600),var(--navy-700));
+    color:#fff;padding:60px 54px;
+  }
+  .fee-main .fee-num{
+    font-family:var(--font-num);font-size:clamp(3.4rem,7vw,5rem);font-weight:800;line-height:1;
+    letter-spacing:.01em;margin:16px 0 6px;
+  }
+  .fee-main .fee-num small{font-size:.35em;font-weight:700;color:var(--sky-200)}
+  .fee-main .cap2{font-size:.9rem;font-weight:700;color:var(--sky-200);letter-spacing:.08em}
+  .fee-main p.note{font-size:.8rem;color:rgba(214,228,252,.7);margin-top:20px}
+  .fee-side{background:var(--paper);padding:60px 54px;display:flex;flex-direction:column;justify-content:center}
+  .fee-side ul{display:flex;flex-direction:column;gap:16px;margin-bottom:34px}
+  .fee-side li{display:flex;gap:12px;align-items:flex-start;font-size:.92rem;font-weight:600;color:var(--ink-600)}
+  .fee-side li .chk{
+    width:22px;height:22px;border-radius:50%;flex:none;margin-top:3px;
+    background:linear-gradient(135deg,var(--leaf-400),#0ca678);
+    display:grid;place-items:center;
+  }
+  .fee-side li .chk svg{width:11px;height:11px}
+  @media (max-width:860px){
+    .fee-band{grid-template-columns:1fr}
+    .fee-main,.fee-side{padding:44px 32px}
+  }
+
+  /* ============ FAQ ============ */
+  .faq{background:var(--paper)}
+  .faq-list{max-width:760px;margin-inline:auto;display:flex;flex-direction:column;gap:14px}
+  details{
+    background:var(--white);border-radius:var(--radius-md);
+    border:1px solid var(--line);overflow:hidden;
+    transition:box-shadow .3s;
+  }
+  details[open]{box-shadow:var(--shadow-card)}
+  summary{
+    cursor:pointer;list-style:none;padding:22px 60px 22px 26px;
+    font-weight:800;font-size:.95rem;position:relative;
+    -webkit-tap-highlight-color:transparent;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{
+    content:"";position:absolute;right:24px;top:50%;width:12px;height:12px;
+    border-right:2.5px solid var(--blue-500);border-bottom:2.5px solid var(--blue-500);
+    transform:translateY(-70%) rotate(45deg);transition:transform .3s;
+  }
+  details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .ans{padding:0 26px 24px;font-size:.88rem;color:var(--ink-600)}
+
+  /* ============ CTA ============ */
+  .cta{
+    background:
+      radial-gradient(800px 400px at 50% 120%,rgba(55,217,160,.2),transparent 60%),
+      linear-gradient(150deg,var(--navy-900),var(--navy-800));
+    color:#fff;text-align:center;position:relative;overflow:hidden;
+  }
+  .cta::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(139,180,251,.06) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(139,180,251,.06) 1px,transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(closest-side at 50% 50%,#000,transparent);
+    -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000,transparent);
+  }
+  .cta .wrap{position:relative;z-index:1}
+  .cta h2{font-size:clamp(1.6rem,3.6vw,2.5rem);font-weight:800;line-height:1.5;margin-bottom:20px}
+  .cta p{color:rgba(199,220,254,.78);margin-bottom:40px;font-size:.95rem}
+  .cta .hero-cta{justify-content:center;margin-bottom:0}
+
+  /* ============ Footer ============ */
+  .footer{background:var(--navy-950);color:rgba(199,220,254,.6);padding:64px 0 36px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:52px}
+  .footer .brand{font-size:1.15rem;margin-bottom:16px}
+  .footer .about{font-size:.8rem;max-width:26em}
+  .foot-grid h4{color:#fff;font-size:.82rem;font-weight:800;letter-spacing:.08em;margin-bottom:16px}
+  .foot-grid ul{display:flex;flex-direction:column;gap:10px}
+  .foot-grid ul a{font-size:.82rem;transition:color .25s}
+  .foot-grid ul a:hover{color:var(--leaf-300)}
+  .copy{
+    text-align:center;font-size:.72rem;letter-spacing:.06em;
+    border-top:1px solid rgba(255,255,255,.08);padding-top:28px;
+    color:rgba(199,220,254,.45);
+  }
+  @media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
+
+  /* back to top */
+  .totop{
+    position:fixed;right:22px;bottom:22px;z-index:90;
+    width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--blue-500),var(--blue-600));color:#fff;
+    box-shadow:0 10px 26px -6px rgba(47,111,240,.6);
+    display:grid;place-items:center;
+    opacity:0;visibility:hidden;transform:translateY(12px);
+    transition:opacity .3s,visibility .3s,transform .3s;
+  }
+  .totop.show{opacity:1;visibility:visible;transform:none}
+  .totop svg{width:18px;height:18px}
+</style>
+</head>
+<body>
+
+<!-- ================= Header ================= -->
+<header class="header" id="header">
+  <div class="wrap header-inner">
+    <a href="#top" class="brand" aria-label="PayLeaf トップへ">
+      <svg class="leaf-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg-leaf" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#37d9a0"/><stop offset="1" stop-color="#2f6ff0"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="36" height="36" rx="11" fill="url(#lg-leaf)"/>
+        <path d="M20 30c-5.5-1.2-8.5-4.8-8.5-9.6 0-5.4 4.3-9.4 11-10.4 2.4-.4 4.7-.3 6 0-0.2 1.5-.8 3.9-2 6.3C24 21.5 20.5 24.5 16 25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M14 28c2.8-4.6 6.8-8.3 12-11" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".75"/>
+      </svg>
+      Pay<em>Leaf</em>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="gnav" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="gnav" id="gnav" aria-label="グローバルナビゲーション">
+      <a href="#features">機能</a>
+      <a href="#security">セキュリティ</a>
+      <a href="#voice">導入事例</a>
+      <a href="#fee">料金</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta" class="btn btn-primary">無料で始める</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= Hero ================= -->
+<main id="top">
+<section class="hero" style="padding-bottom:0">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="badge rv on"><span class="dot"></span>シリーズC調達完了・導入社数 12,000社突破</p>
+      <h1 class="rv on">お金の流れを、<br><span class="grad">葉脈のように</span>なめらかに。</h1>
+      <p class="lead rv on rv-d1">PayLeafは、クレジットカード・QRコード・銀行振込をひとつのAPIに束ねるオンライン決済プラットフォーム。審査最短即日、実装は最短3分。売上の流れが、今日から変わります。</p>
+      <div class="hero-cta rv on rv-d2">
+        <a class="btn btn-primary" href="#cta">無料アカウント作成
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#features">機能を見る</a>
+      </div>
+      <ul class="hero-stats rv on rv-d3">
+        <li><div class="num"><span class="count" data-to="12000">0</span><small>社</small></div><div class="label">導入企業</div></li>
+        <li><div class="num"><span class="count" data-to="99.99" data-dec="2">0</span><small>%</small></div><div class="label">稼働率(過去12ヶ月)</div></li>
+        <li><div class="num"><span class="count" data-to="3">0</span><small>分</small></div><div class="label">最短実装時間</div></li>
+      </ul>
+    </div>
+
+    <div class="hero-visual rv on rv-d2">
+      <div class="chip chip-1">
+        <span class="cic">✅</span>
+        <span>入金が完了しました<small>株式会社ミナモ商事 ¥248,000</small></span>
+      </div>
+      <div class="chip chip-2">
+        <span class="cic">📈</span>
+        <span>今月の決済成功率<small>99.2%(前月比 +0.4pt)</small></span>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div class="phone-screen">
+          <div class="ps-head">
+            <p class="hello">おかえりなさい、佐伯さん 🌿</p>
+            <p class="balance"><small>¥</small>4,382,150</p>
+            <div class="ps-actions"><span>💸 送金</span><span>🧾 請求</span><span>🔗 リンク決済</span></div>
+          </div>
+          <div class="ps-body">
+            <p class="ps-label">今日の取引</p>
+            <div class="tx"><span class="ic b1">🛍️</span><span class="meta"><span class="name">ECサイト決済</span><span class="time">14:02・Visa ****4821</span></span><span class="amt plus">+¥12,800</span></div>
+            <div class="tx"><span class="ic b2">📱</span><span class="meta"><span class="name">QRコード決済</span><span class="time">13:48・PayLeaf QR</span></span><span class="amt plus">+¥3,240</span></div>
+            <div class="tx"><span class="ic b3">🏦</span><span class="meta"><span class="name">銀行振込(即時)</span><span class="time">11:15・みつば銀行</span></span><span class="amt plus">+¥86,000</span></div>
+            <div class="ps-chart">
+              <div class="row"><b>週間売上推移</b><span>▲ 18.6%</span></div>
+              <svg viewBox="0 0 220 64" aria-hidden="true">
+                <defs>
+                  <linearGradient id="lg-area" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#2f6ff0" stop-opacity=".35"/>
+                    <stop offset="1" stop-color="#2f6ff0" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0 50 C 24 44, 36 52, 55 42 S 90 20, 110 26 S 150 40, 168 24 S 205 8, 220 12 L 220 64 L 0 64 Z" fill="url(#lg-area)"/>
+                <path d="M0 50 C 24 44, 36 52, 55 42 S 90 20, 110 26 S 150 40, 168 24 S 205 8, 220 12" fill="none" stroke="#2f6ff0" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="220" cy="12" r="4" fill="#37d9a0" stroke="#fff" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 55 C 240 5, 480 95, 720 55 C 960 15, 1200 75, 1440 35 L1440 90 Z" fill="#ffffff"/>
+  </svg>
+</section>
+
+<!-- ================= Logos ================= -->
+<div class="logos">
+  <div class="wrap">
+    <p class="cap rv">スタートアップから上場企業まで、あらゆる規模のビジネスが PayLeaf を選んでいます</p>
+    <div class="logo-track rv rv-d1">
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle cx="13" cy="13" r="11" stroke="currentColor" stroke-width="2.4"/><path d="M7 13h12M13 7v12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>ミナモ商事</span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 20 13 5l9 15H4Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg><span>KAGURA<span class="lg-sub">MOBILITY</span></span></span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="4" y="4" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="13" r="4" fill="currentColor"/></svg>tsumugi</span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 17c3-8 7-12 9-12s6 4 9 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 21h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>アオバ百貨店</span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M13 3v20M5 8l16 10M21 8 5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>HOSHIMI<span class="lg-sub">TRAVEL</span></span></span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 13a9 9 0 1 0 9-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="13" cy="13" r="3" fill="currentColor"/></svg>くらしのマルシェ</span>
+      <span class="logo-item"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="3" y="8" width="20" height="12" rx="3" stroke="currentColor" stroke-width="2.2"/><path d="M3 12h20" stroke="currentColor" stroke-width="2.2"/></svg><span>FUJITANI<span class="lg-sub">HOLDINGS</span></span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Features ================= -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="kicker">FEATURES</span>
+      <h2 class="title">決済のすべてを、<br>ひとつのダッシュボードに。</h2>
+      <p class="sec-lead">バラバラだった決済手段・入金管理・不正対策。PayLeafなら、契約ひとつ・管理画面ひとつで完結します。</p>
+    </div>
+    <div class="feat-grid">
+      <article class="feat-card rv">
+        <span class="tag">MULTI</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2.5" y="6" width="23" height="16" rx="3.5" stroke="#1857d4" stroke-width="2"/><path d="M2.5 11h23" stroke="#1857d4" stroke-width="2"/><rect x="6" y="15.5" width="7" height="3" rx="1.5" fill="#37d9a0"/></svg></div>
+        <h3>あらゆる決済手段に、1本のAPIで</h3>
+        <p>クレジットカード、QRコード、コンビニ払い、銀行振込、後払い。国内主要25ブランドを、たった数行のコードで導入。決済手段の追加も管理画面からワンクリックです。</p>
+      </article>
+      <article class="feat-card rv rv-d1">
+        <span class="tag">SPEED</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M15.5 3 6 16h7l-1.5 9L21 12h-7l1.5-9Z" fill="#37d9a0" stroke="#1857d4" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <h3>売上は、翌日あなたの口座へ</h3>
+        <p>業界標準の「月末締め翌月末払い」はもう過去のもの。PayLeafは最短翌営業日の自動入金に対応。キャッシュフローの不安から、事業を解放します。</p>
+      </article>
+      <article class="feat-card rv rv-d2">
+        <span class="tag">NO-CODE</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M9 8.5 4 14l5 5.5M19 8.5 24 14l-5 5.5" stroke="#1857d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 5.5l-3 17" stroke="#37d9a0" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+        <h3>エンジニアがいなくても、始められる</h3>
+        <p>URLを送るだけの「リンク決済」、埋め込みタグだけの「ウィジェット決済」を標準搭載。コードを1行も書かずに、今日からオンライン販売を開始できます。</p>
+      </article>
+      <article class="feat-card rv">
+        <span class="tag">SUBSCRIPTION</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M22 14a8 8 0 1 1-2.3-5.6" stroke="#1857d4" stroke-width="2.2" stroke-linecap="round"/><path d="M22 4v5h-5" stroke="#37d9a0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>サブスク課金も、おまかせ</h3>
+        <p>日次・月次・年次の継続課金、無料トライアル、プラン変更時の日割り計算まで自動化。カード有効期限の自動更新で、意図しない解約を平均34%削減します。</p>
+      </article>
+      <article class="feat-card rv rv-d1">
+        <span class="tag">ANALYTICS</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M4 24V14M11.5 24V7M19 24v-8M26 24V4" stroke="#1857d4" stroke-width="2.4" stroke-linecap="round"/><circle cx="26" cy="4" r="2.6" fill="#37d9a0"/></svg></div>
+        <h3>売上が「見える」ダッシュボード</h3>
+        <p>決済成功率、離脱ポイント、リピート率をリアルタイムに可視化。CSVエクスポートや会計ソフト連携で、月次の締め作業も驚くほど短くなります。</p>
+      </article>
+      <article class="feat-card rv rv-d2">
+        <span class="tag">GLOBAL</span>
+        <div class="feat-ic"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="10.5" stroke="#1857d4" stroke-width="2"/><ellipse cx="14" cy="14" rx="4.5" ry="10.5" stroke="#1857d4" stroke-width="1.6"/><path d="M4 11h20M4 17.5h20" stroke="#37d9a0" stroke-width="1.6"/></svg></div>
+        <h3>135通貨対応で、世界に売る</h3>
+        <p>越境ECに必要な多通貨決済・自動換算・現地決済手段(Alipay+、各国ウォレット)に標準対応。海外売上も、国内と同じ画面でまとめて管理できます。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Flow ================= -->
+<section class="flow">
+  <div class="wrap">
+    <div class="flow-box rv">
+      <div class="flow-step">
+        <div class="n">01</div>
+        <h3>アカウント作成(3分)</h3>
+        <p>メールアドレスだけで登録完了。テスト環境はその場ですぐに使えます。</p>
+      </div>
+      <div class="flow-step">
+        <div class="n">02</div>
+        <h3>オンライン審査(最短即日)</h3>
+        <p>書類の郵送は不要。事業情報の入力とWebサイトの確認だけで審査が完了します。</p>
+      </div>
+      <div class="flow-step">
+        <div class="n">03</div>
+        <h3>本番決済スタート</h3>
+        <p>APIキーを切り替えるだけで本番稼働。導入後は専任チームが伴走します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Security ================= -->
+<section class="security" id="security">
+  <div class="wrap">
+    <div class="sec-grid">
+      <div class="rv">
+        <span class="kicker">SECURITY</span>
+        <h2 class="title">攻めの成長は、<br>守りの堅さから。</h2>
+        <p class="sec-lead">PayLeafのセキュリティ基盤は、金融機関と同等の水準で設計されています。お客様のカード情報は、あなたのサーバーには一切保存されません。</p>
+        <div class="cert-row">
+          <span class="cert">PCI DSS v4.0 準拠</span>
+          <span class="cert">ISO/IEC 27001</span>
+          <span class="cert">3Dセキュア 2.0</span>
+          <span class="cert">プライバシーマーク</span>
+        </div>
+      </div>
+      <div class="shield-wrap rv rv-d1">
+        <svg viewBox="0 0 420 420" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg-shield" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2f6ff0"/><stop offset="1" stop-color="#123061"/>
+            </linearGradient>
+            <radialGradient id="lg-glow" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#2f6ff0" stop-opacity=".5"/>
+              <stop offset="1" stop-color="#2f6ff0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="210" cy="210" r="200" fill="url(#lg-glow)"/>
+          <g class="ring ring-1" stroke="#5b8ff7" stroke-opacity=".5" fill="none">
+            <circle cx="210" cy="210" r="168" stroke-width="1.4" stroke-dasharray="6 14"/>
+            <circle cx="210" cy="42" r="5" fill="#37d9a0" stroke="none"/>
+          </g>
+          <g class="ring ring-2" stroke="#8fb4fb" stroke-opacity=".35" fill="none">
+            <circle cx="210" cy="210" r="140" stroke-width="1.2" stroke-dasharray="2 10"/>
+            <circle cx="350" cy="210" r="4" fill="#8fb4fb" stroke="none"/>
+          </g>
+          <path d="M210 96l86 32v66c0 62-36 104-86 130-50-26-86-68-86-130v-66l86-32Z" fill="url(#lg-shield)" stroke="#8fb4fb" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M210 96l86 32v66c0 62-36 104-86 130V96Z" fill="#fff" opacity=".06"/>
+          <path d="M172 210l28 28 52-56" fill="none" stroke="#37d9a0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="sec-list" style="margin-top:70px">
+      <div class="sec-item rv">
+        <span class="sic"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="9.5" width="14" height="9" rx="2.5" stroke="#6fe8bd" stroke-width="1.8"/><path d="M7.5 9.5V7a3.5 3.5 0 0 1 7 0v2.5" stroke="#6fe8bd" stroke-width="1.8"/><circle cx="11" cy="14" r="1.7" fill="#6fe8bd"/></svg></span>
+        <div><h3>カード情報の完全トークン化</h3><p>カード番号は決済の瞬間に暗号化トークンへ変換。生のカード情報はPayLeafの隔離環境のみで処理され、加盟店のサーバーには一切触れません。</p></div>
+      </div>
+      <div class="sec-item rv rv-d1">
+        <span class="sic"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="#6fe8bd" stroke-width="1.8"/><path d="M11 6.5v4.8l3.2 2" stroke="#6fe8bd" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <div><h3>AIによる24時間365日の不正検知</h3><p>毎秒数千件の取引を機械学習モデルがリアルタイム監視。不審な取引は0.1秒以内にブロックし、チャージバック被害を平均72%削減しています。</p></div>
+      </div>
+      <div class="sec-item rv rv-d2">
+        <span class="sic"><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2.8 18 5.6v4.6c0 4.6-2.7 7.8-7 9.8-4.3-2-7-5.2-7-9.8V5.6l7-2.8Z" stroke="#6fe8bd" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 11l2.2 2.2L14.5 8.7" stroke="#6fe8bd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div><h3>金融庁登録の資金移動業者</h3><p>PayLeafは資金移動業者(関東財務局長 第00X号)として登録済み。お預かりする資金は法令に基づき全額保全され、万一の際もお客様の資産は守られます。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Voice ================= -->
+<section class="voice" id="voice">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="kicker">CUSTOMER VOICE</span>
+      <h2 class="title">選ばれる理由は、<br>数字が語ってくれる。</h2>
+    </div>
+    <div class="voice-grid">
+      <article class="voice-card rv">
+        <p class="q">決済導線をPayLeafのウィジェットに切り替えただけで、カゴ落ち率が23%改善しました。決済画面の読み込みの速さは、想像以上に売上に直結します。導入を迷っていた3ヶ月がもったいなかった。</p>
+        <div class="voice-who">
+          <span class="avatar av-1">高</span>
+          <div><div class="nm">高瀬 涼介</div><div class="rl">tsumugi株式会社 執行役員 CGO</div></div>
+        </div>
+      </article>
+      <article class="voice-card rv rv-d1">
+        <p class="q">月初の入金消込に丸2日かかっていたのが、会計連携で2時間になりました。経理チームの残業がなくなっただけでなく、日次で資金繰りが見えるようになったのが経営として一番大きい変化です。</p>
+        <div class="voice-who">
+          <span class="avatar av-2">白</span>
+          <div><div class="nm">白鳥 えみ</div><div class="rl">株式会社ミナモ商事 経営管理部長</div></div>
+        </div>
+      </article>
+      <article class="voice-card rv rv-d2">
+        <p class="q">海外ユーザー向けに135通貨対応を自前で作ったら、開発だけで半年はかかっていたはず。PayLeafはAPIドキュメントが丁寧で、実装からテスト完了まで実質1週間。エンジニアとして感動しました。</p>
+        <div class="voice-who">
+          <span class="avatar av-3">神</span>
+          <div><div class="nm">神谷 快</div><div class="rl">HOSHIMI TRAVEL リードエンジニア</div></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Fee ================= -->
+<section class="fee" id="fee">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="kicker">PRICING</span>
+      <h2 class="title">シンプルすぎる料金体系。</h2>
+      <p class="sec-lead">初期費用も月額固定費もゼロ。かかるのは、売上が発生したときの決済手数料だけです。</p>
+    </div>
+    <div class="fee-band rv">
+      <div class="fee-main">
+        <p class="cap2">決済手数料</p>
+        <p class="fee-num">2.8<small>%</small></p>
+        <p class="cap2">国内カード決済・一律</p>
+        <p class="note">※ QRコード決済は2.0%、銀行振込は1件あたり¥180。取扱高に応じたボリュームディスカウントあり。解約金・最低利用期間はありません。</p>
+      </div>
+      <div class="fee-side">
+        <ul>
+          <li><span class="chk"><svg viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M1.5 5.8 4.2 8.5 9.5 2.8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>初期費用 ¥0 / 月額費用 ¥0</li>
+          <li><span class="chk"><svg viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M1.5 5.8 4.2 8.5 9.5 2.8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>振込手数料無料(10万円以上の入金時)</li>
+          <li><span class="chk"><svg viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M1.5 5.8 4.2 8.5 9.5 2.8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>不正検知・3Dセキュアも追加費用なし</li>
+          <li><span class="chk"><svg viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M1.5 5.8 4.2 8.5 9.5 2.8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>平日9-21時のチャット・電話サポート</li>
+        </ul>
+        <a class="btn btn-primary" href="#cta" style="align-self:flex-start">今すぐ手数料を試算する</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="kicker">FAQ</span>
+      <h2 class="title">よくあるご質問</h2>
+    </div>
+    <div class="faq-list rv">
+      <details>
+        <summary>個人事業主でも利用できますか?</summary>
+        <p class="ans">はい、ご利用いただけます。開業届の控えまたは確定申告書があればお申し込み可能です。屋号なしの個人の方も、本人確認書類のみで審査を受けられます。</p>
+      </details>
+      <details>
+        <summary>審査にはどのくらい時間がかかりますか?</summary>
+        <p class="ans">最短で当日、通常2〜3営業日で完了します。テスト環境はお申し込み直後から利用できるため、審査中に実装・動作確認を進めておくことが可能です。</p>
+      </details>
+      <details>
+        <summary>今使っている決済サービスからの乗り換えは大変ですか?</summary>
+        <p class="ans">主要な決済サービスからの移行ツールをご用意しています。継続課金中の顧客カード情報も、PCI DSSに準拠した安全な方法で移管可能です。専任の移行チームが無償でサポートします。</p>
+      </details>
+      <details>
+        <summary>売上金はいつ入金されますか?</summary>
+        <p class="ans">標準では月2回(15日締め・月末締め)の自動入金です。オプションの「スピード入金」をご利用いただくと、最短翌営業日に売上金を受け取れます(手数料0.5%)。</p>
+      </details>
+      <details>
+        <summary>解約時に費用は発生しますか?</summary>
+        <p class="ans">いいえ。解約金・違約金は一切ありません。最低利用期間の縛りもないため、いつでも管理画面から解約手続きが可能です。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <h2 class="rv">売上の流れが変わる瞬間を、<br>今日、体験してください。</h2>
+    <p class="rv rv-d1">アカウント作成は3分、クレジットカード登録は不要。<br>テスト環境で、PayLeafのなめらかさをすぐに確かめられます。</p>
+    <div class="hero-cta rv rv-d2">
+      <a class="btn btn-primary" href="#top">無料でアカウント作成
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#features">資料をダウンロード</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= Footer ================= -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="brand">
+          <svg class="leaf-mark" viewBox="0 0 40 40" aria-hidden="true" style="width:28px;height:28px">
+            <rect x="2" y="2" width="36" height="36" rx="11" fill="url(#lg-leaf)"/>
+            <path d="M20 30c-5.5-1.2-8.5-4.8-8.5-9.6 0-5.4 4.3-9.4 11-10.4 2.4-.4 4.7-.3 6 0-0.2 1.5-.8 3.9-2 6.3C24 21.5 20.5 24.5 16 25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+          </svg>
+          Pay<em>Leaf</em>
+        </span>
+        <p class="about">株式会社PayLeaf(ペイリーフ)<br>〒107-0062 東京都港区南青山2-14-8 リーフゲート青山9F<br>資金移動業者 関東財務局長 第00X号</p>
+      </div>
+      <div>
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="#features">機能一覧</a></li>
+          <li><a href="#security">セキュリティ</a></li>
+          <li><a href="#fee">料金</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>開発者向け</h4>
+        <ul>
+          <li><a href="#features">APIドキュメント</a></li>
+          <li><a href="#features">SDK・ライブラリ</a></li>
+          <li><a href="#security">システムステータス</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>会社情報</h4>
+        <ul>
+          <li><a href="#top">会社概要</a></li>
+          <li><a href="#voice">導入事例</a></li>
+          <li><a href="#cta">採用情報</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© 2026 masafykun</p>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="ページ上部へ戻る">
+  <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 14V4M4.5 8.5 9 4l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Header state & back-to-top ---------- */
+  var header = document.getElementById("header");
+  var totop = document.getElementById("totop");
+  function onScroll() {
+    var y = window.scrollY || window.pageYOffset;
+    header.classList.toggle("scrolled", y > 30);
+    totop.classList.toggle("show", y > 700);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  totop.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+
+  /* ---------- Mobile menu ---------- */
+  var menuBtn = document.getElementById("menuBtn");
+  var gnav = document.getElementById("gnav");
+  function closeMenu() {
+    gnav.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+  menuBtn.addEventListener("click", function () {
+    var open = gnav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(open));
+    document.body.style.overflow = open ? "hidden" : "";
+  });
+  gnav.addEventListener("click", function (e) {
+    if (e.target.closest("a")) closeMenu();
+  });
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll(".rv");
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("on");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("on"); });
+  }
+
+  /* ---------- Count-up numbers ---------- */
+  function animateCount(el) {
+    var to = parseFloat(el.getAttribute("data-to"));
+    var dec = parseInt(el.getAttribute("data-dec") || "0", 10);
+    if (reduceMotion) {
+      el.textContent = to.toLocaleString("ja-JP", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      return;
+    }
+    var dur = 1600;
+    var start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = to * eased;
+      el.textContent = val.toLocaleString("ja-JP", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll(".count");
+  if ("IntersectionObserver" in window) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          cio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { cio.observe(el); });
+  } else {
+    counters.forEach(animateCount);
+  }
+
+  /* ---------- Hero canvas: drifting nodes & links ---------- */
+  var canvas = document.getElementById("heroCanvas");
+  if (canvas && !reduceMotion) {
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0;
+    var nodes = [];
+    var NODE_COUNT = 46;
+    var LINK_DIST = 150;
+
+    function resize() {
+      var rect = canvas.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function initNodes() {
+      nodes = [];
+      for (var i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: 1 + Math.random() * 1.8
+        });
+      }
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      var i, j, a, b;
+      for (i = 0; i < nodes.length; i++) {
+        a = nodes[i];
+        a.x += a.vx;
+        a.y += a.vy;
+        if (a.x < -20) a.x = W + 20; else if (a.x > W + 20) a.x = -20;
+        if (a.y < -20) a.y = H + 20; else if (a.y > H + 20) a.y = -20;
+      }
+      ctx.lineWidth = 1;
+      for (i = 0; i < nodes.length; i++) {
+        a = nodes[i];
+        for (j = i + 1; j < nodes.length; j++) {
+          b = nodes[j];
+          var dx = a.x - b.x, dy = a.y - b.y;
+          var d2 = dx * dx + dy * dy;
+          if (d2 < LINK_DIST * LINK_DIST) {
+            var alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.22;
+            ctx.strokeStyle = "rgba(139,180,251," + alpha.toFixed(3) + ")";
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (i = 0; i < nodes.length; i++) {
+        a = nodes[i];
+        ctx.fillStyle = "rgba(143,180,251,.6)";
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    initNodes();
+    requestAnimationFrame(tick);
+    var resizeTimer = null;
+    window.addEventListener("resize", function () {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        resize();
+        initNodes();
+      }, 200);
+    });
+  }
+})();
+</script>
+</body>
+</html>
